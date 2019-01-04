@@ -8,6 +8,13 @@ namespace Entity
 {
     public class BaseEntity : IEntity<int>,IDeleteEntity,IAuditEntity
     {
+        public BaseEntity()
+        {
+            TimeCreatedOffset = DateTimeOffset.Now;
+            TimeModifyOffset = DateTimeOffset.Now;
+        }
+
+        
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Entity.Migrations
 {
-    public partial class InitDb : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -85,6 +85,7 @@ namespace Entity.Migrations
                     Avatar = table.Column<string>(nullable: true),
                     Note = table.Column<string>(nullable: true),
                     SexType = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
                     RefreshToken = table.Column<string>(nullable: true),
                     RefreshTokenExpireDate = table.Column<DateTimeOffset>(nullable: false),
                     Country = table.Column<string>(nullable: true),
@@ -159,6 +160,42 @@ namespace Entity.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserRelationShips",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreateBy = table.Column<string>(nullable: true),
+                    TimeCreatedOffset = table.Column<DateTimeOffset>(nullable: false),
+                    TimeModifyOffset = table.Column<DateTimeOffset>(nullable: true),
+                    ModifyBy = table.Column<string>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: false),
+                    TimeDeletedOffset = table.Column<DateTimeOffset>(nullable: true),
+                    DeletedBy = table.Column<string>(nullable: true),
+                    IsFriend = table.Column<bool>(nullable: false),
+                    Ignored = table.Column<bool>(nullable: false),
+                    IsBlock = table.Column<bool>(nullable: false),
+                    CurrentUserId = table.Column<string>(nullable: true),
+                    OtherUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRelationShips", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserRelationShips_Users_CurrentUserId",
+                        column: x => x.CurrentUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserRelationShips_Users_OtherUserId",
+                        column: x => x.OtherUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserRoles",
                 columns: table => new
                 {
@@ -202,6 +239,16 @@ namespace Entity.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_UserRelationShips_CurrentUserId",
+                table: "UserRelationShips",
+                column: "CurrentUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRelationShips_OtherUserId",
+                table: "UserRelationShips",
+                column: "OtherUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
                 table: "UserRoles",
                 column: "RoleId");
@@ -225,6 +272,9 @@ namespace Entity.Migrations
 
             migrationBuilder.DropTable(
                 name: "Hobbies");
+
+            migrationBuilder.DropTable(
+                name: "UserRelationShips");
 
             migrationBuilder.DropTable(
                 name: "UserRoles");

@@ -1,0 +1,167 @@
+﻿@model Service.LoginUserModel
+
+@{
+    ViewBag.Title = "index";
+    Layout = "_Layout";
+}
+<style>
+    * { padding: 0; margin: 0; }
+    canvas { display: block; margin: 0 auto; }
+</style>
+
+Your score:
+<span id="score">0</span>
+
+
+<canvas id="myCanvas" width="1300" height="700"></canvas>
+
+<script>
+    var canvas = document.getElementById("myCanvas");
+    var ctx = canvas.getContext("2d");
+
+    var ballRadius = 10;
+    var x = canvas.width/2;
+    var y = canvas.height-30;
+    var dx = 2;
+    var dy = -2;
+    var temp = 0;
+
+    var paddleHeight = 10;
+    var paddleWidth = 400;
+    var paddleX = (canvas.width - paddleWidth) / 2;
+    var rightPressed = false;
+    var leftPressed = false;
+    var ballSpeed = 10;
+    var rdColorBall = "black";
+    var rdColorPad = "white";
+
+    var score = 0;
+
+    //step 2
+  
+    function drawBall() {
+        ctx.beginPath();
+        //ball size,index
+        ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+        ctx.fillStyle = rdColorBall;
+        ctx.fill();
+        ctx.closePath();
+    }
+    var interval = setInterval(draw, ballSpeed);
+
+    function randomIntFromInterval(min,max) // min and max included
+    {
+        if (score > 10) {
+            min = -score / 3;
+            max = score / 3;
+        }
+        rdColorBall ="#"+ Math.floor(Math.random() * 16777215).toString(16);
+        rdColorPad = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+        $("#myCanvas").css("background-color", "#" + Math.floor(Math.random() * 16777215).toString(16));
+        $("body").css("background-color", "#" + Math.floor(Math.random() * 16777215).toString(16));
+
+
+        var rd = Math.floor(Math.random() * (max - min + 1) + min);
+        if (rd > -1 && rd < 1)
+           return randomIntFromInterval(min, max);
+        console.log(rd);
+        return rd;
+    }
+    function rdDirection() {
+        dx = randomIntFromInterval(-3, 3);
+                dy = randomIntFromInterval(-3, 3);
+                if(dy>0)
+                    dy = -dy;
+                if (dx < 0)
+                    dx = -dx;
+    }
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBall();
+        drawPaddle();
+        if (x + dx > canvas.width - ballRadius) {
+            dx = randomIntFromInterval(-3, 3);
+            if (dx > 0)
+                dx = -dx;
+        }
+        if (x + dx < ballRadius) {
+            dx = randomIntFromInterval(-3, 3);
+            if (dx < 0)
+                dx = -dx;
+        }
+        x += dx;
+        if(y + dy < ballRadius) {
+            dy = randomIntFromInterval(-3, 3);
+            if(dy<0)
+                dy = -dy;
+        } else if(y + dy > canvas.height-ballRadius) {
+            if(x > paddleX && x < paddleX + paddleWidth) {
+                dx = randomIntFromInterval(-3, 3);
+                dy = randomIntFromInterval(-3, 3);
+                if(dy>0)
+                    dy = -dy;
+                if (dx < 0)
+                    dx = -dx;
+
+                ballSpeed-=0.5;
+                clearInterval(interval);
+                interval = setInterval(draw, ballSpeed);
+                paddleWidth = paddleWidth / 1.1;
+                score++;
+
+                $("#score").text(score);
+            }
+            else {
+                clearInterval(interval);
+                document.location.reload();
+            }
+        }
+        y += dy;
+
+        if(rightPressed && paddleX < canvas.width-paddleWidth) {
+            paddleX += 7;
+        }
+        else if(leftPressed && paddleX > 0) {
+            paddleX -= 7;
+        }
+       
+    }
+    //speed ball
+   
+
+    //step 3
+   
+    function drawPaddle() {
+        ctx.beginPath();
+        ctx.rect(paddleX, canvas.height-paddleHeight, paddleWidth, paddleHeight);
+        ctx.fillStyle = rdColorPad;
+        ctx.fill();
+        ctx.closePath();
+    }
+  
+    function keyDownHandler(e) {
+        if(e.key == "Right" || e.key == "ArrowRight") {
+            rightPressed = true;
+        }
+        else if(e.key == "Left" || e.key == "ArrowLeft") {
+            leftPressed = true;
+        }
+    }
+
+    function keyUpHandler(e) {
+        if(e.key == "Right" || e.key == "ArrowRight") {
+            rightPressed = false;
+        }
+        else if(e.key == "Left" || e.key == "ArrowLeft") {
+            leftPressed = false;
+        }
+      
+    }
+    document.addEventListener("keydown", keyDownHandler, false);
+    document.addEventListener("keyup", keyUpHandler, false);
+
+
+ 
+
+</script>

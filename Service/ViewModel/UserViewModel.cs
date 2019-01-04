@@ -16,6 +16,7 @@ namespace Service
         public SexType SexType { get; set; }
         public string Country { get; set; }
         public string PhoneNumber { get; set; }
+        public Status Status { get; set; }
 
     }
 
@@ -27,6 +28,7 @@ namespace Service
         public string Country { get; set; }
         public string Note { get; set; }
         public string PhoneNumber { get; set; }
+        public Status Status { get; set; }
     }
 
     public class UserViewProfile
@@ -38,6 +40,8 @@ namespace Service
         public string Country { get; set; }
         public string Note { get; set; }
         public string PhoneNumber { get; set; }
+        public Status Status { get; set; }
+   
     }
 
     public class UserOtherViewModel
@@ -48,5 +52,15 @@ namespace Service
         public string Country { get; set; }
         public string Hobbies{ get; set; }
         public string Avatar{ get; set; }
+        public Status Status { get; set; }
+        public bool IsFriend { get; set; }
+        public bool IsBan { get; set; }
+        public bool IsAway { get; set; }
+    }
+
+    public class LoginUserModel
+    {
+        public string UserName { get; set; }
+        public string Password { get; set; }
     }
 }

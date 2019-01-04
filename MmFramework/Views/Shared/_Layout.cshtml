@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" type="text/css" href="~/DataTable/dataTables.css">
+
+ 
+    <link href="~/lib/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+
+    
+<script src="~/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="~/DataTable/dataTables.js"></script>
+<div>
+    @RenderBody()
+</div>
+@RenderSection("scripts", false)
+</body>
+</html>

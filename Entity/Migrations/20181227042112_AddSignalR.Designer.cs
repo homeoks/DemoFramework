@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Entity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181224063956_InitDb")]
-    partial class InitDb
+    [Migration("20181227042112_AddSignalR")]
+    partial class AddSignalR
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -147,6 +147,45 @@ namespace Entity.Migrations
                     b.ToTable("Hobbies");
                 });
 
+            modelBuilder.Entity("Entity.Model.UserRelationShip", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreateBy");
+
+                    b.Property<string>("CurrentUserId");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<bool>("Ignored");
+
+                    b.Property<bool>("IsBlock");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsFriend");
+
+                    b.Property<string>("ModifyBy");
+
+                    b.Property<string>("OtherUserId");
+
+                    b.Property<DateTimeOffset>("TimeCreatedOffset");
+
+                    b.Property<DateTimeOffset?>("TimeDeletedOffset");
+
+                    b.Property<DateTimeOffset?>("TimeModifyOffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrentUserId");
+
+                    b.HasIndex("OtherUserId");
+
+                    b.ToTable("UserRelationShips");
+                });
+
             modelBuilder.Entity("Entity.Model.UserRole", b =>
                 {
                     b.Property<int>("Id")
@@ -242,6 +281,8 @@ namespace Entity.Migrations
 
                     b.Property<int>("SexType");
 
+                    b.Property<int>("Status");
+
                     b.Property<DateTimeOffset>("TimeCreatedOffset");
 
                     b.Property<DateTimeOffset?>("TimeDeletedOffset");
@@ -269,6 +310,17 @@ namespace Entity.Migrations
                     b.HasOne("Entity.User", "User")
                         .WithMany("Hobbies")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Entity.Model.UserRelationShip", b =>
+                {
+                    b.HasOne("Entity.User", "CurrentUser")
+                        .WithMany()
+                        .HasForeignKey("CurrentUserId");
+
+                    b.HasOne("Entity.User", "OtherUser")
+                        .WithMany()
+                        .HasForeignKey("OtherUserId");
                 });
 
             modelBuilder.Entity("Entity.Model.UserRole", b =>

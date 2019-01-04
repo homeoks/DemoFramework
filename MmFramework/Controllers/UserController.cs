@@ -1,4 +1,6 @@
-﻿using MFramework.Controllers.BaseApiController;
+﻿using Infrastructure;
+using MFramework.Controllers.BaseApiController;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Service;
 using Service.Interface;
@@ -35,19 +37,21 @@ namespace MmFramework.Controllers
 
         [HttpGet]
         [Route("GetOtherUserProfile")]
-        public IActionResult GetOtherUserProfile()
+        [AllowAnonymous]
+        public IActionResult GetOtherUserProfile(string search="",int pageSize=10,int pageIndex=1)
         {
-            return Result(() => _userService.GetOtherUserProfile(CurrentUser.Id));
+            return Result(() => _userService.GetOtherUserProfile(search,pageSize, pageIndex,CurrentUser.Id));
         }
 
         [HttpGet]
         [Route("GetUserById")]
         public IActionResult GetUserById(string id)
         {
-            return Result(() => _userService.GetUserById(id));
+            return Result(() => _userService.GetUserById(id, CurrentUser.Id));
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("GetCountries")]
         public IActionResult GetCountries()
         {
@@ -60,6 +64,19 @@ namespace MmFramework.Controllers
         {
             return Result(() => _countryService.GetCountries());
         }   
+        [HttpPost]
+        [Route("ActionUser")]
+        public IActionResult ActionUser(RelationAction action,string userId)
+        {
+            return Result(() => (_userService).ActionUser(action,userId,CurrentUser.Id));
+        }
 
+
+        [HttpGet]
+        [Route("GetBlackList")]
+        public IActionResult GetBlackList()
+        {
+            return Result(() => _userService.GetBlackList(CurrentUser.Id));
+        }
     }
 }

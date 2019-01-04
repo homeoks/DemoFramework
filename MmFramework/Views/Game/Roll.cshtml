@@ -1,0 +1,126 @@
+﻿@model object
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<script src="~/roll/roll.js"></script>
+<link href="~/roll/odometer-theme-default.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    .hide {
+        animation-name: hide;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
+        animation-timing-function: linear;
+        zoom: 5;
+    }
+
+    .change {
+        animation-name: change;
+        animation-duration: 2s;
+        animation-fill-mode: forwards;
+        animation-timing-function: linear;
+        zoom: 5;
+        color: red;
+    }
+
+    @@keyframes change {
+        /*0% {
+            opacity: 0;
+            zoom: 1;
+
+        }
+
+        100% {
+            opacity: 1;
+            zoom: 5;
+        }*/
+    }
+
+    @@keyframes hide {
+    }
+</style>
+
+<div class="row">
+    <div class="col-6">
+        Min<input value="10" de type="number" id="min" />
+        <br />
+        Max<input value="10000" type="number" id="max" />
+        <br />
+        <button id="btn">Ok ok</button>
+        <br />
+        @*<span >??????????????</span>*@
+        <span id="result" class="odometer"></span>
+
+    </div>
+    <div class="col-6">
+        <div id="areaString"></div>
+        <input id="txtString" type="text"/><button id="addString">Add</button>
+        <button id="rollString">Rolllllllllllllllll</button><br/>
+        <span id="resultString">empty current is array sir right now</span>
+    </div>
+
+</div>
+
+@section scripts{
+    <script>
+        function randomIntFromInterval(min,max) // min and max included
+        {
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+        function pad(num, size) {
+            var s = num+"";
+            while (s.length < size) s = "0" + s;
+            return s;
+        }
+        $('#btn').click(function () {
+            $('#result').removeClass("change");
+            $('#result').addClass("hide");
+
+            var min = $('#min').val();
+            var max = $('#max').val();
+            setTimeout(function () {
+                var rd = randomIntFromInterval(parseInt(min),parseInt(max));
+                //$('#result').text(rd);
+                $('#result').addClass("change");
+                $('.odometer').html(rd);
+            }, 10);
+          
+        });
+
+        var arrString = [];
+        $('#addString').click(function () {
+            var txtString = $('#txtString').val();
+
+            if (arrString.indexOf(txtString)<0)
+            {
+                arrString.push(txtString);
+                $('#areaString').append("<p>" + txtString + "</p>");}
+
+            console.log(arrString);
+        });
+
+        $('#rollString').click(function () {
+            var size = arrString.length;
+            if (size > 0) {
+                var rd = randomIntFromInterval(0, size);
+                $('#resultString').text(arrString[rd]);
+                $('#resultString').addClass("change");
+            }
+            
+        });
+
+    </script>
+}

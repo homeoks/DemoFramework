@@ -13,6 +13,7 @@ namespace Entity
         public string Avatar { get; set; }
         public string Note { get; set; }
         public SexType SexType { get; set; }
+        public Status Status { get; set; }
         public string RefreshToken { get; set; }
         public DateTimeOffset RefreshTokenExpireDate { get; set; }
   

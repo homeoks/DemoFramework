@@ -5,6 +5,13 @@ namespace Infrastructure
 {
     public class PagingModel<T>
     {
+        public PagingModel(List<T> data,int pageSize,int pageIndex,int total)
+        {
+            PageIndex = pageIndex;
+            PageSize = pageSize;
+            TotalItem = total;
+            Data = data;
+        }
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
         public int TotalItem { get; set; }

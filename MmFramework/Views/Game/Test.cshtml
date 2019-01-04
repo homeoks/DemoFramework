@@ -1,0 +1,153 @@
+﻿@using Infrastructure
+@model List<Entity.User>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+
+
+<style>
+    .online {
+        color: blue;
+    }
+
+    .offline {
+        color: gray;
+    }
+
+    .busy {
+        color: red;
+    }
+
+    .afk {
+        color: darkseagreen;
+        text-decoration: line-through
+    }
+
+    img {
+        width: 30px;
+    }
+</style>
+
+Message:
+<textarea style="width: 100%" id="message"></textarea>
+<div class="col"></div>
+<div class="col"><button class="pull-right" asp-action="Send" id="btnMessage">SEND</button></div>
+<div class="col"></div>
+<table id="myTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Avatar</th>
+            <th>Note</th>
+            <th>Sex</th>
+            <th>Status</th>
+            <th>Country</th>
+            <th>Send Message</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{ var index = 1; }
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@(index++)</td>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <td><img src="@user.Avatar" /></td>
+                <td>@user.Note</td>
+                <td>@user.SexType</td>
+                <td>
+
+                    @if (user.Status == Status.Online)
+                    {
+                        <span class="online">@user.Status</span>
+                    }
+                    else
+                    {
+                        if (user.Status == Status.Offline)
+                        {
+                            <span class="offline">@user.Status</span>
+                        }
+                        else
+                        {
+                            if (user.Status == Status.Busy)
+                            {
+                                <span class="busy">@user.Status</span>
+                            }
+                            else
+                            {
+                                <span class="afk">@user.Status</span>
+                            }
+                        }
+                    }
+
+                </td>
+                <td>@user.Country</td>
+                <td class="sendMessageForUser" colspan="2">
+                    <span style="display: none">
+                        @user.Id
+                    </span>
+                    Send Message
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+@section scripts{
+    <script>
+
+        $('#myTable').DataTable();  
+
+
+        $('#btnMessage').click(function () {
+            var message = $('textarea#message').val();
+            debugger;
+            console.log($('textarea#message'));
+
+            console.log(message);
+            $.post('@Url.Action("Send")',
+                    { message:message},
+                    function() {
+                    }).done(function (msg) {
+                    console.log(message);
+                    console.log($('textarea#message'));
+                })
+                .fail(function(xhr, status, error) {
+                    alert("ERORR" + status + error);
+                });
+        });
+
+        $('#myTable').on('click','.sendMessageForUser',function () {
+            debugger;
+            var message = $('textarea#message').val();
+            var id = $(this).find('span').text();
+         
+            console.log($('textarea#message'));
+
+            console.log(message);
+            $.post('@Url.Action("Send")',
+                    {
+                        message:message,
+                        id:id
+                    },
+                    function() {
+                    }).done(function (msg) {
+                    console.log(message);
+                    console.log($('textarea#message'));
+                })
+                .fail(function(xhr, status, error) {
+                    alert("ERORR" + status + error);
+                });
+        });
+    </script>
+}

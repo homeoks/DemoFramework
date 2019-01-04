@@ -19,6 +19,39 @@ namespace Entity.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Entity.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content");
+
+                    b.Property<string>("CreateBy");
+
+                    b.Property<DateTimeOffset>("DateReceive");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<string>("FromUser");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<string>("ModifyBy");
+
+                    b.Property<DateTimeOffset>("TimeCreatedOffset");
+
+                    b.Property<DateTimeOffset?>("TimeDeletedOffset");
+
+                    b.Property<DateTimeOffset?>("TimeModifyOffset");
+
+                    b.Property<string>("ToUser");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("Entity.Model.Configuration", b =>
                 {
                     b.Property<int>("Id")
@@ -145,6 +178,45 @@ namespace Entity.Migrations
                     b.ToTable("Hobbies");
                 });
 
+            modelBuilder.Entity("Entity.Model.UserRelationShip", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreateBy");
+
+                    b.Property<string>("CurrentUserId");
+
+                    b.Property<string>("DeletedBy");
+
+                    b.Property<bool>("Ignored");
+
+                    b.Property<bool>("IsBlock");
+
+                    b.Property<bool>("IsDeleted");
+
+                    b.Property<bool>("IsFriend");
+
+                    b.Property<string>("ModifyBy");
+
+                    b.Property<string>("OtherUserId");
+
+                    b.Property<DateTimeOffset>("TimeCreatedOffset");
+
+                    b.Property<DateTimeOffset?>("TimeDeletedOffset");
+
+                    b.Property<DateTimeOffset?>("TimeModifyOffset");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrentUserId");
+
+                    b.HasIndex("OtherUserId");
+
+                    b.ToTable("UserRelationShips");
+                });
+
             modelBuilder.Entity("Entity.Model.UserRole", b =>
                 {
                     b.Property<int>("Id")
@@ -189,6 +261,44 @@ namespace Entity.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("Entity.SignalR", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Connected");
+
+                    b.Property<string>("ConnectionId");
+
+                    b.Property<string>("UserAgent");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<string>("UserName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SignalR");
+                });
+
+            modelBuilder.Entity("Entity.SignalRoom", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FromUser");
+
+                    b.Property<string>("RoomName");
+
+                    b.Property<bool>("ToUser");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SignalRooms");
                 });
 
             modelBuilder.Entity("Entity.User", b =>
@@ -240,6 +350,8 @@ namespace Entity.Migrations
 
                     b.Property<int>("SexType");
 
+                    b.Property<int>("Status");
+
                     b.Property<DateTimeOffset>("TimeCreatedOffset");
 
                     b.Property<DateTimeOffset?>("TimeDeletedOffset");
@@ -267,6 +379,17 @@ namespace Entity.Migrations
                     b.HasOne("Entity.User", "User")
                         .WithMany("Hobbies")
                         .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("Entity.Model.UserRelationShip", b =>
+                {
+                    b.HasOne("Entity.User", "CurrentUser")
+                        .WithMany()
+                        .HasForeignKey("CurrentUserId");
+
+                    b.HasOne("Entity.User", "OtherUser")
+                        .WithMany()
+                        .HasForeignKey("OtherUserId");
                 });
 
             modelBuilder.Entity("Entity.Model.UserRole", b =>

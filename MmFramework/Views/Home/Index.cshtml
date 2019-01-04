@@ -1,0 +1,12 @@
+﻿@model Service.LoginUserModel
+
+@{
+    ViewBag.Title = "index";
+    Layout = "_Layout";
+}
+
+<form method="post" asp-action="Index" autocomplete="on" role="form">
+    <input asp-for="UserName" type="text" placeholder="Username" />
+    <input asp-for="Password" type="text" placeholder="Password" />
+    <button type="submit">Login</button>
+</form>

@@ -19,10 +19,14 @@ namespace Service.Config
                 cfg.CreateMap<User, UserViewModel>().ForAllMembers(opt => opt.Condition((source, dest, sourceMember, destMember) => (sourceMember != null)));
                 cfg.CreateMap<UserViewModel, User>().ForAllMembers(opt => opt.Condition((source, dest, sourceMember, destMember) => (sourceMember != null)));
 
+                cfg.CreateMap<User, UserOtherViewModel>().ForAllMembers(opt => opt.Condition((source, dest, sourceMember, destMember) => (sourceMember != null)));
+                cfg.CreateMap<UserOtherViewModel, User>().ForAllMembers(opt => opt.Condition((source, dest, sourceMember, destMember) => (sourceMember != null)));
+
+
                 cfg.CreateMap<User, UserViewProfile>().ForAllMembers(opt => opt.Condition((source, dest, sourceMember, destMember) => (sourceMember != null)));
 
-                cfg.CreateMap<User, UserEditProfile>().ForAllMembers(opt => opt.Condition((source, dest, sourceMember, destMember) => (sourceMember != null)));
-                cfg.CreateMap<UserEditProfile, User>().ForAllMembers(opt => opt.Condition((source, dest, sourceMember, destMember) => (sourceMember != null)));
+                cfg.CreateMap<User, UserEditProfile>().ForAllMembers(opt => opt.Condition((source, dest, sourceMember, destMember) => (sourceMember != null && (sourceMember as string != ""))));
+                cfg.CreateMap<UserEditProfile, User>().ForAllMembers(opt => opt.Condition((source, dest, sourceMember, destMember) => (sourceMember != null && (sourceMember as string != ""))));
 
                 #endregion
 
@@ -40,6 +44,14 @@ namespace Service.Config
 
 
                 #endregion
+
+
+                #region Message
+                cfg.CreateMap<MessageViewModel, Message>().ForAllMembers(opt => opt.Condition((source, dest, sourceMember, destMember) => (sourceMember != null && (sourceMember as string != ""))));
+                cfg.CreateMap<Message, MessageViewModel>().ForAllMembers(opt => opt.Condition((source, dest, sourceMember, destMember) => (sourceMember != null && (sourceMember as string != ""))));
+
+                #endregion
+
             });
         }
     }

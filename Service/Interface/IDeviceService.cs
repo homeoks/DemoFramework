@@ -1,4 +1,5 @@
 ﻿using Infrastructure;
+using Infrastructure;
 
 namespace Service.Interface
 {

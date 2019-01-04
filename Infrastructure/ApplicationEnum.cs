@@ -41,4 +41,27 @@ namespace Infrastructure
         [Description("Afk")]
         Afk= 4,
     }
+
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum RelationAction
+    {
+        [Description("Friend")]
+        Friend = 1,
+        [Description("Block")]
+        Block = 2,
+        [Description("Away")]
+        Away = 3,
+    }
+    [JsonConverter(typeof(StringEnumConverter))]
+    public enum TypeRelation
+    {
+        [Description("Normal")]
+        Online=1,
+        [Description("Family")]
+        Offline = 2,
+        [Description("BFF")]
+        Busy = 3,
+        [Description("FWB")]
+        Afk= 4,
+    }
 }

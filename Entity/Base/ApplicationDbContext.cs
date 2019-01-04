@@ -25,6 +25,10 @@ namespace Entity.Base
         public DbSet<Hobby> Hobbies{ get; set; }
         public DbSet<Country> Countries{ get; set; }
         public DbSet<Configuration> Configurations{ get; set; }
+        public DbSet<UserRelationShip> UserRelationShips{ get; set; }
+        public DbSet<SignalR> SignalR { get; set; }
+        public DbSet<SignalRoom> SignalRooms { get; set; }
+        public DbSet<Message> Messages{ get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (optionsBuilder.IsConfigured) return;
